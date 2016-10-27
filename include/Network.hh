@@ -6,7 +6,7 @@
 **
 ** Creation Date : jeu. 20 oct. 2016 15:27:36 CEST
 **
-** Last Modified : jeu. 20 oct. 2016 16:13:44 CEST
+** Last Modified : jeu. 27 oct. 2016 12:22:47 CEST
 **
 ** Created by : Alexandre LUU <https://github.com/luual>
 **
@@ -27,7 +27,7 @@ class Network : public INetwork
     public:
         Network();
         ~Network();
-        int Connect();
-        int Disconnect();
-        std::string GetIp() const;
+        virtual int Connect();
+        virtual int Disconnect();
+        virtual std::string GetIp() const;
 };

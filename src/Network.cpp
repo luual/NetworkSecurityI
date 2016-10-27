@@ -6,7 +6,7 @@
 **
 ** Creation Date : jeu. 20 oct. 2016 15:33:39 CEST
 **
-** Last Modified : jeu. 20 oct. 2016 16:15:36 CEST
+** Last Modified : jeu. 27 oct. 2016 12:22:46 CEST
 **
 ** Created by : Alexandre LUU <https://github.com/luual>
 **
@@ -54,4 +54,15 @@ int Network::Disconnect()
 // GetIp
 std::string Network::GetIp() const
 {
+    if (m_ifap == NULL)
+        return "";
+    std::string out;
+    struct ifaddrs* tmp = m_ifap;
+    while (tmp)
+    {
+        out += tmp->ifa_name;
+        out += "::";
+        tmp = tmp->ifa_next;
+    }
+    return out;
 }

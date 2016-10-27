@@ -1,2 +1,3 @@
 *.o
 sniffer
+sniffer_test
