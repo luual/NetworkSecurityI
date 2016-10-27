@@ -23,7 +23,7 @@ NAMET	=	sniffer_test
 
 LXXDFLAGS	=		
 
-CXXFLAGS	=	-Wall -Wextra -I./include -std=c++11
+CXXFLAGS	=	-Wall -Wextra -I./include -std=c++11 -g3
 
 CGREEN	=	"\033[0;32m"
 CNOCOLOR =	"\033[0m"

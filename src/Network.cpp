@@ -6,7 +6,7 @@
 **
 ** Creation Date : jeu. 20 oct. 2016 15:33:39 CEST
 **
-** Last Modified : jeu. 27 oct. 2016 12:22:46 CEST
+** Last Modified : jeu. 27 oct. 2016 18:10:31 CEST
 **
 ** Created by : Alexandre LUU <https://github.com/luual>
 **
@@ -21,9 +21,8 @@
 Network::Network()
 {
     while (getifaddrs(&m_ifap) == -1)
-            std::cout << strerror(errno) << std::endl;
+        std::cout << strerror(errno) << std::endl;
 }
-
 /////////////////////////////////////////////////////
 // Destructor of the class will free the memory
 // allocated in the constructor
@@ -32,37 +31,44 @@ Network::~Network()
     if (m_ifap != NULL)
         freeifaddrs(m_ifap);
 }
-
 /////////////////////////////////////////////////////
-// TO DO 
-// Connect
-int Network::Connect()
+// GetNetworkInterface
+std::vector<std::string> Network::GetNetworkInterface() const
 {
-    return 0;
-}
-
-/////////////////////////////////////////////////////
-// TO DO
-// Disconnect
-
-int Network::Disconnect()
-{
-    return 0;
-}
-
-/////////////////////////////////////////////////////
-// GetIp
-std::string Network::GetIp() const
-{
+    std::vector<std::string> out;
     if (m_ifap == NULL)
-        return "";
-    std::string out;
+        return out;
     struct ifaddrs* tmp = m_ifap;
     while (tmp)
     {
-        out += tmp->ifa_name;
-        out += "::";
+        bool flag = false;
+        for (std::vector<std::string>::iterator it = out.begin();
+                it != out.end();
+                ++it)
+        {
+            if (tmp->ifa_name == *it)
+                flag = true;
+        }
+        if (flag == false)
+            out.push_back(tmp->ifa_name);
         tmp = tmp->ifa_next;
     }
     return out;
+}
+/////////////////////////////////////////////////////
+// GetNetworkInterface
+std::string             Network::GetIp(std::string const networkName) const
+{
+    struct ifaddrs* tmp = m_ifap;
+    while (tmp)
+    {
+        if (tmp->ifa_name == networkName)
+        {
+            struct sockaddr_in* myaddr = (struct sockaddr_in*)tmp->ifa_addr->sa_data;
+            std::cout << inet_ntoa(myaddr->sin_addr) << std::endl;
+            std::cout << "port : "<< myaddr->sin_port << std::endl;
+        }
+        tmp = tmp->ifa_next;
+    }
+    return "asd";
 }
