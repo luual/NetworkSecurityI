@@ -5,7 +5,8 @@ RM		=	rm -f
 VPATH	=	src \
 			tests
 
-SRCS	=	Network.cpp
+SRCS	=	Network.cpp \
+			Socket.cpp
 
 SRCM	=	main.cpp
 
