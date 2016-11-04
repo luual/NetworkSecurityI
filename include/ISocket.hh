@@ -6,7 +6,7 @@
 **
 ** Creation Date : jeu. 27 oct. 2016 21:56:45 CEST
 **
-** Last Modified : ven. 28 oct. 2016 11:09:35 CEST
+** Last Modified : ven. 04 nov. 2016 17:56:53 CET
 **
 ** Created by : Alexandre LUU <https://github.com/luual>
 **
@@ -21,6 +21,5 @@ class ISocket
         virtual ~ISocket(){}
         //virtual int Connect(const std::string hostname, const int port) = 0;
         virtual int Connect() = 0;
-        virtual int Receive() = 0;
-        virtual int Send() = 0;
+        virtual const int GetSocket() const = 0;
 };

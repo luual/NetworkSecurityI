@@ -6,7 +6,7 @@
 **
 ** Creation Date : jeu. 20 oct. 2016 15:04:04 CEST
 **
-** Last Modified : ven. 28 oct. 2016 11:12:24 CEST
+** Last Modified : ven. 04 nov. 2016 18:34:42 CET
 **
 ** Created by : Alexandre LUU <https://github.com/luual>
 **
@@ -15,19 +15,14 @@
 #include <iostream>
 #include "Network.hh"
 #include "Socket.hh"
+#include "SocketAnalyzer.hh"
 
 int main(void)
 {
     Network net;
     Socket socks;
-    auto networkInterfaces = net.GetNetworkInterface();
-    for (std::vector<std::string>::iterator it = networkInterfaces.begin();
-            it != networkInterfaces.end(); ++it)
-    {
-        std::cout << *it << std::endl;
-    }
-    //net.GetIp("docker0");
+    SocketAnalyzer asock;
     socks.Connect();
-    socks.Receive();
+    asock.Analyze(socks.GetSocket());
     return 0;
 }

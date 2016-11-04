@@ -6,7 +6,8 @@ VPATH	=	src \
 			tests
 
 SRCS	=	Network.cpp \
-			Socket.cpp
+			Socket.cpp \
+			SocketAnalyzer.cpp
 
 SRCM	=	main.cpp
 

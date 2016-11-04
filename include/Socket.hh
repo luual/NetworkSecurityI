@@ -6,7 +6,7 @@
 **
 ** Creation Date : jeu. 27 oct. 2016 22:13:06 CEST
 **
-** Last Modified : ven. 04 nov. 2016 17:36:45 CET
+** Last Modified : ven. 04 nov. 2016 18:30:48 CET
 **
 ** Created by : Alexandre LUU <https://github.com/luual>
 **
@@ -31,15 +31,8 @@ class Socket : public ISocket
     public:
         Socket();
         virtual ~Socket();
-        //virtual int Connect(const std::string hostname, const int port);
+        virtual const int GetSocket() const;
         virtual int Connect();
-        virtual int Receive();
-        virtual int Send();
     private:
         int m_sock;
-        struct hostent *m_hostinfo;
-        struct sockaddr_in m_sin;
-        int Process(char* data, int length);
-        int Process(std::string data, int length);
-        int PrintHeader(struct iphdr* iph, int iphdrlen);
 };
