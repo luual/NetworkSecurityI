@@ -6,7 +6,7 @@
 **
 ** Creation Date : ven. 04 nov. 2016 18:14:30 CET
 **
-** Last Modified : ven. 04 nov. 2016 18:53:08 CET
+** Last Modified : ven. 04 nov. 2016 18:58:49 CET
 **
 ** Created by : Alexandre LUU <https://github.com/luual>
 **
@@ -23,8 +23,6 @@
 #include <netinet/tcp.h>
 #include <netinet/udp.h>
 #include "ISocketAnalyzer.hh"
-
-std::map<int,std::string> PROTOCOLNAME;
 
 class SocketAnalyzer : public ISocketAnalyzer
 {
