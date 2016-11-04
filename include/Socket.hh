@@ -6,7 +6,7 @@
 **
 ** Creation Date : jeu. 27 oct. 2016 22:13:06 CEST
 **
-** Last Modified : ven. 04 nov. 2016 16:33:53 CET
+** Last Modified : ven. 04 nov. 2016 17:36:45 CET
 **
 ** Created by : Alexandre LUU <https://github.com/luual>
 **
@@ -39,5 +39,7 @@ class Socket : public ISocket
         int m_sock;
         struct hostent *m_hostinfo;
         struct sockaddr_in m_sin;
-        int Process(char* ip);
+        int Process(char* data, int length);
+        int Process(std::string data, int length);
+        int PrintHeader(struct iphdr* iph, int iphdrlen);
 };
