@@ -2,7 +2,7 @@
 **
 ** File Name : Network.hh
 **
-** Purpose : 
+** Purpose :
 **
 ** Creation Date : jeu. 20 oct. 2016 15:27:36 CEST
 **
@@ -24,7 +24,7 @@
 
 #include "INetwork.hh"
 
-class Network : public INetwork 
+class Network : public INetwork
 {
     private:
         struct ifaddrs* m_ifap;

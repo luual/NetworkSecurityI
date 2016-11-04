@@ -6,7 +6,7 @@
 **
 ** Creation Date : jeu. 27 oct. 2016 22:19:43 CEST
 **
-** Last Modified : ven. 28 oct. 2016 11:12:23 CEST
+** Last Modified : ven. 04 nov. 2016 16:32:36 CET
 **
 ** Created by : Alexandre LUU <https://github.com/luual>
 **
@@ -72,6 +72,7 @@ int Socket::Receive()
     {
         std::cerr << "Failed to received packet" << std::endl;
     }
+    Process(buffer);
     return 0;
 }
 
@@ -80,5 +81,18 @@ int Socket::Receive()
 
 int Socket::Send()
 {
+    return 0;
+}
+
+////////////////////////////////////////
+// process
+
+int Socket::Process(char* data)
+{
+    struct iphdr* iph = (struct iphdr*)data;
+    int iphdrlen = iph->ihl*4;
+    struct tcphdr* tcph = (struct tcphdr*)(data + iphdrlen);
+    std::cout << "protocol : " << (int)iph->protocol << std::endl;
+    std::cout << "Source : " << ntohs(tcph->source) << std::endl;
     return 0;
 }

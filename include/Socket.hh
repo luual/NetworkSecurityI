@@ -6,7 +6,7 @@
 **
 ** Creation Date : jeu. 27 oct. 2016 22:13:06 CEST
 **
-** Last Modified : ven. 28 oct. 2016 11:06:35 CEST
+** Last Modified : ven. 04 nov. 2016 16:33:53 CET
 **
 ** Created by : Alexandre LUU <https://github.com/luual>
 **
@@ -19,6 +19,9 @@
 #include <arpa/inet.h>
 #include <errno.h>
 #include <string.h>
+#include <netinet/ip.h>
+#include <netinet/tcp.h>
+#include <netinet/udp.h>
 #include "ISocket.hh"
 
 // http://www.binarytides.com/packet-sniffer-code-c-linux/
@@ -36,4 +39,5 @@ class Socket : public ISocket
         int m_sock;
         struct hostent *m_hostinfo;
         struct sockaddr_in m_sin;
+        int Process(char* ip);
 };
