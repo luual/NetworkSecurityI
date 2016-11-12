@@ -6,13 +6,14 @@
 **
 ** Creation Date : jeu. 27 oct. 2016 22:19:43 CEST
 **
-** Last Modified : ven. 04 nov. 2016 18:30:14 CET
+** Last Modified : sam. 12 nov. 2016 19:40:01 CET
 **
 ** Created by : Alexandre LUU <https://github.com/luual>
 **
 **************************************************************/
 
 #include <iostream>
+#include <unistd.h>
 #include "Socket.hh"
 
 ////////////////////////////////////////
@@ -26,6 +27,7 @@ Socket::Socket()
 // Destructor
 Socket::~Socket()
 {
+    close(m_sock);
 }
 
 ////////////////////////////////////////
@@ -34,17 +36,26 @@ Socket::~Socket()
 //int Socket::Connect(cosnt std::string hostname, const int port)
 int Socket::Connect()
 {
-    while((m_sock = socket(AF_INET, SOCK_RAW, IPPROTO_TCP)) == -1)
+    for (int i = 0; i < 10; ++i)
     {
-        std::cerr << strerror(errno) << std::endl;
+        if((m_sock = socket(AF_INET, SOCK_RAW, IPPROTO_TCP)) != -1)
+        {
+            return 0;
+        }
+        else
+        {
+            std::cerr << "Attempt " << i << " / 10" << std::endl;
+            sleep(1);
+        }
     }
-    return 0;
+    std::cerr << strerror(errno) << std::endl;
+    return -1;
 }
 
 ////////////////////////////////////////
 // GetSocket
 
-const int Socket::GetSocket() const
+int Socket::GetSocket() const
 {
     return m_sock;
 }

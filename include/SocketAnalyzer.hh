@@ -6,7 +6,7 @@
 **
 ** Creation Date : ven. 04 nov. 2016 18:14:30 CET
 **
-** Last Modified : ven. 04 nov. 2016 18:58:49 CET
+** Last Modified : sam. 12 nov. 2016 19:37:38 CET
 **
 ** Created by : Alexandre LUU <https://github.com/luual>
 **
@@ -30,7 +30,8 @@ class SocketAnalyzer : public ISocketAnalyzer
         virtual int Analyze(const int socket);
     private:
         int Process(char* data, int length);
-        int Process(std::string data, int length);
         int PrintHeader(struct iphdr* iph, int iphdrlen);
+        int PrintTCP(char* buffer, struct iphdr* iph, int iphdrlen, int size);
+        void PrintData(char* data, int size);
 
 };

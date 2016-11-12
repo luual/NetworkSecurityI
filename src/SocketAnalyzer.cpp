@@ -6,7 +6,7 @@
  **
  ** Creation Date : ven. 04 nov. 2016 18:14:20 CET
  **
- ** Last Modified : ven. 04 nov. 2016 19:10:00 CET
+ ** Last Modified : sam. 12 nov. 2016 19:37:40 CET
  **
  ** Created by : Alexandre LUU <https://github.com/luual>
  **
@@ -34,7 +34,6 @@ int SocketAnalyzer::Analyze(const int socket)
         {
             std::cerr << "Failed to received packet" << std::endl;
         }
-        sleep(1);
     }
     return 0;
 }
@@ -57,6 +56,49 @@ int SocketAnalyzer::PrintHeader(struct iphdr* iph, int iphdrlen)
     std::cout << "Checksum  : " << ntohs(iph->check) << std::endl;
     std::cout << "Source : " << inet_ntoa(source.sin_addr) << std::endl;
     std::cout << "Destination : " << inet_ntoa(dest.sin_addr) << std::endl;
+    std::cout << "Size ip header : " << iphdrlen << std::endl;
+    return 0;
+}
+
+////////////////////////////////////////
+// PrintData
+
+void SocketAnalyzer::PrintData(char* data, int size)
+{
+    for(int i = 0; i < size; ++i)
+    {
+        if ((data[i] >= 32) && (data[i] <= 126))
+        {
+            std::cout << data[i];
+        }
+        else
+        {
+            std::cout << ".";
+        }
+    }
+    std::cout << std::endl;
+}
+
+////////////////////////////////////////
+// PrintTCP
+
+int SocketAnalyzer::PrintTCP(char* buffer, struct iphdr* iph, int iphdrlen, int size)
+{
+    struct tcphdr* tcp = (struct tcphdr*)(buffer + iphdrlen);
+    std::cout << "////////////////////////////////////////" << std::endl;
+    std::cout << "TCP" << std::endl;
+    std::cout << "Source Port : " << ntohs(tcp->source) << std::endl;
+    std::cout << "Destination Port : " << ntohs(tcp->dest) << std::endl;
+    std::cout << "Header Length : " << tcp->doff * 4 << std::endl;
+    std::cout << "Checksum : " << tcp->check << std::endl;
+    std::cout << "========================================" << std::endl;
+    std::cout << "Size ip header : " << ntohs(iph->tot_len) << std::endl;
+    std::cout << "IP Header" << std::endl;
+    PrintData(buffer, iphdrlen);
+    std::cout << "TCP Header" << std::endl;
+    PrintData(buffer + iphdrlen, tcp->doff * 4);
+    std::cout << "TCP body " << std::endl;
+    PrintData(buffer + iphdrlen + tcp->doff * 4, size - (tcp->doff * 4 + iphdrlen));
     return 0;
 }
 
@@ -67,21 +109,8 @@ int SocketAnalyzer::Process(char* data, int length)
 {
     struct iphdr* iph = (struct iphdr*)data;
     int iphdrlen = iph->ihl*4;
-    struct tcphdr* tcph = (struct tcphdr*)(data + iphdrlen);
+    //struct tcphdr* tcph = (struct tcphdr*)(data + iphdrlen);
     PrintHeader(iph, iphdrlen);
-    std::cout << "protocol : " << (int)iph->protocol << std::endl;
-    std::cout << "port : " << ntohs(tcph->source) << std::endl;
+    PrintTCP(data, iph, iphdrlen, length);
     return 0;
-}
-
-int SocketAnalyzer::Process(std::string data, int length)
-{
-    struct iphdr* iph = (struct iphdr*)data.c_str();
-    int iphdrlen = iph->ihl*4;
-    struct tcphdr* tcph = (struct tcphdr*)(data.c_str() + iphdrlen);
-    std::cout << "size : " << data.length() << std::endl;
-    std::cout << "protocol : " << (int)iph->protocol << std::endl;
-    std::cout << "Port : " << ntohs(tcph->source) << std::endl;
-    return 0;
-
 }

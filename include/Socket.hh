@@ -6,7 +6,7 @@
 **
 ** Creation Date : jeu. 27 oct. 2016 22:13:06 CEST
 **
-** Last Modified : ven. 04 nov. 2016 18:30:48 CET
+** Last Modified : sam. 12 nov. 2016 19:41:05 CET
 **
 ** Created by : Alexandre LUU <https://github.com/luual>
 **
@@ -31,7 +31,7 @@ class Socket : public ISocket
     public:
         Socket();
         virtual ~Socket();
-        virtual const int GetSocket() const;
+        virtual int GetSocket() const;
         virtual int Connect();
     private:
         int m_sock;
