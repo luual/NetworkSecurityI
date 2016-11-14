@@ -6,7 +6,7 @@
  **
  ** Creation Date : ven. 04 nov. 2016 18:14:20 CET
  **
- ** Last Modified : sam. 12 nov. 2016 19:37:40 CET
+ ** Last Modified : lun. 14 nov. 2016 20:07:24 CET
  **
  ** Created by : Alexandre LUU <https://github.com/luual>
  **
@@ -28,6 +28,7 @@ int SocketAnalyzer::Analyze(const int socket)
     {
         if (dataSize > 0)
         {
+            std::cout << "Found Something" << std::endl;
             Process(buffer, dataSize);
         }
         else

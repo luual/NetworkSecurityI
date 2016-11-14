@@ -2,11 +2,11 @@
 **
 ** File Name : main.cpp
 **
-** Purpose : 
+** Purpose :
 **
 ** Creation Date : jeu. 20 oct. 2016 15:04:04 CEST
 **
-** Last Modified : ven. 04 nov. 2016 18:34:42 CET
+** Last Modified : lun. 14 nov. 2016 22:18:44 CET
 **
 ** Created by : Alexandre LUU <https://github.com/luual>
 **
@@ -22,7 +22,9 @@ int main(void)
     Network net;
     Socket socks;
     SocketAnalyzer asock;
-    socks.Connect();
+    if (socks.Connect(IPPROTO_TCP) == -1)
+        return -1;
+    std::cout << "Socket created" << std::endl;
     asock.Analyze(socks.GetSocket());
     return 0;
 }

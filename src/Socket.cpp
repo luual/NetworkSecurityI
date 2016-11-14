@@ -2,11 +2,11 @@
 **
 ** File Name : Socket.cpp
 **
-** Purpose : 
+** Purpose :
 **
 ** Creation Date : jeu. 27 oct. 2016 22:19:43 CEST
 **
-** Last Modified : sam. 12 nov. 2016 19:40:01 CET
+** Last Modified : lun. 14 nov. 2016 20:23:19 CET
 **
 ** Created by : Alexandre LUU <https://github.com/luual>
 **
@@ -33,12 +33,11 @@ Socket::~Socket()
 ////////////////////////////////////////
 // Connect
 
-//int Socket::Connect(cosnt std::string hostname, const int port)
-int Socket::Connect()
+int Socket::Connect(int protocol)
 {
     for (int i = 0; i < 10; ++i)
     {
-        if((m_sock = socket(AF_INET, SOCK_RAW, IPPROTO_TCP)) != -1)
+        if((m_sock = socket(AF_INET, SOCK_RAW, protocol)) != -1)
         {
             return 0;
         }

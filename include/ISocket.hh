@@ -2,7 +2,7 @@
 **
 ** File Name : ISocket.hh
 **
-** Purpose : 
+** Purpose :
 **
 ** Creation Date : jeu. 27 oct. 2016 21:56:45 CEST
 **
@@ -20,6 +20,6 @@ class ISocket
     public:
         virtual ~ISocket(){}
         //virtual int Connect(const std::string hostname, const int port) = 0;
-        virtual int Connect() = 0;
+        virtual int Connect(int protocol) = 0;
         virtual int GetSocket() const = 0;
 };

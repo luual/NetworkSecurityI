@@ -2,7 +2,7 @@
 **
 ** File Name : Socket.hh
 **
-** Purpose : 
+** Purpose :
 **
 ** Creation Date : jeu. 27 oct. 2016 22:13:06 CEST
 **
@@ -11,7 +11,7 @@
 ** Created by : Alexandre LUU <https://github.com/luual>
 **
 **************************************************************/
- 
+
 #pragma once
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -24,15 +24,13 @@
 #include <netinet/udp.h>
 #include "ISocket.hh"
 
-// http://www.binarytides.com/packet-sniffer-code-c-linux/
-
 class Socket : public ISocket
 {
     public:
         Socket();
         virtual ~Socket();
         virtual int GetSocket() const;
-        virtual int Connect();
+        virtual int Connect(int protocol);
     private:
         int m_sock;
 };
