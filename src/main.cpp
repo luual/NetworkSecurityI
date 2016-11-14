@@ -15,11 +15,13 @@
 #include <iostream>
 #include "Network.hh"
 #include "Socket.hh"
+#include "Vector.hh"
 #include "SocketAnalyzer.hh"
 
 int main(void)
 {
     Network net;
+    Vector<Packet> v;
     Socket socks;
     SocketAnalyzer asock;
     if (socks.Connect(IPPROTO_TCP) == -1)

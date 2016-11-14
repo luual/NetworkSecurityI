@@ -2,11 +2,11 @@
  **
  ** File Name : Analyzer.cpp
  **
- ** Purpose : 
+ ** Purpose :
  **
  ** Creation Date : ven. 04 nov. 2016 18:14:20 CET
  **
- ** Last Modified : lun. 14 nov. 2016 20:07:24 CET
+ ** Last Modified : lun. 14 nov. 2016 23:49:44 CET
  **
  ** Created by : Alexandre LUU <https://github.com/luual>
  **
@@ -113,5 +113,18 @@ int SocketAnalyzer::Process(char* data, int length)
     //struct tcphdr* tcph = (struct tcphdr*)(data + iphdrlen);
     PrintHeader(iph, iphdrlen);
     PrintTCP(data, iph, iphdrlen, length);
+    std::cout << "==============RAW==============" << std::endl;
+    for (int i = 0; i < length; ++i)
+    {
+        if (data[i] >= 32 && data[i] < 127)
+        {
+            std::cout << data[i];
+        }
+        else
+        {
+            std::cout << ",";
+        }
+    }
+    std::cout << std::endl;
     return 0;
 }
