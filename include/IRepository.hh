@@ -2,7 +2,7 @@
 **
 ** File Name : IRepository.hh
 **
-** Purpose : 
+** Purpose :
 **
 ** Creation Date : mar. 15 nov. 2016 00:24:02 CET
 **
@@ -12,3 +12,13 @@
 **
 **************************************************************/
 #pragma once
+
+template <typename T>
+class IRepository
+{
+public:
+    virtual void Insert(T element) = 0;
+    virtual void Delete(T element) = 0;
+    virtual void Update(int index, T element) = 0;
+    virtual T GetByIndex(int index) = 0;
+};
