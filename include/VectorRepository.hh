@@ -24,7 +24,7 @@ public:
     VectorRepository();
     ~VectorRepository();
     virtual void Insert(Packet element);
-    virtual void Delete(Packet element);
+    virtual void Delete(int index);
     virtual void Update(int index, Packet element);
     virtual const Packet GetByIndex(int index) const;
     virtual const Vector<Packet> GetAll() const;
