@@ -36,4 +36,4 @@ class Vector : public IVector<T>
         pthread_mutex_t m_lock;
 };
 
-#include "Vector.tpp"
+#include "Vector.hpp"
