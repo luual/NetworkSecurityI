@@ -8,7 +8,8 @@ VPATH	=	src \
 SRCS	=	Network.cpp \
 			Socket.cpp \
 			SocketAnalyzer.cpp \
-			Thread.cpp
+			Thread.cpp \ 
+			VectorRepository.cpp
 
 SRCM	=	main.cpp
 
