@@ -21,7 +21,7 @@
 Network::Network()
 {
     while (getifaddrs(&m_ifap) == -1)
-        std::cout << strerror(errno) << std::endl;
+        std::cerr << strerror(errno) << std::endl;
 }
 /////////////////////////////////////////////////////
 // Destructor of the class will free the memory
