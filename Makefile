@@ -3,18 +3,19 @@ CC		=	g++
 RM		=	rm -f
 
 VPATH	=	src \
-		tests
+			tests
 
 SRCS	=	Network.cpp \
-		Socket.cpp \
-		SocketAnalyzer.cpp \
-		Thread.cpp \
-		VectorRepository.cpp
+			Socket.cpp \
+			SocketAnalyzer.cpp \
+			Thread.cpp
 
 SRCM	=	main.cpp
 
 SRCT	=	main_test.cpp \
-			VectorTest.cpp
+			VectorTest.cpp \
+			ThreadTest.cpp \
+			RepositoryTest.cpp
 
 OBJS	=	$(SRCS:.cpp=.o)
 

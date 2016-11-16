@@ -17,7 +17,6 @@
 template<typename T>
 Vector<T>::Vector()
 {
-    pthread_mutex_init(&m_lock, NULL);
 }
 
 template <typename T>
@@ -64,7 +63,13 @@ void Vector<T>::Remove(int position)
 }
 
 template <typename T>
-const std::vector<T> Vector<T>::GetAll() const
+const std::vector<T> Vector<T>::GetAll()
 {
     return m_vector;
+}
+
+template <typename T>
+T Vector<T>::operator[](int index)
+{
+    return m_vector[index];
 }

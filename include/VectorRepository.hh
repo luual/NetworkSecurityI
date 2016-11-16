@@ -6,31 +6,31 @@
 **
 ** Creation Date : mar. 15 nov. 2016 22:15:17 CET
 **
-** Last Modified : mar. 15 nov. 2016 22:15:19 CET
+** Last Modified : mer. 16 nov. 2016 22:18:54 CET
 **
 ** Created by : Alexandre LUU <https://github.com/luual>
 **
 **************************************************************/
 #pragma once
 
-#include <mutex>
 #include "IRepository.hh"
 #include "ISocketAnalyzer.hh"
 #include "Vector.hh"
 
-class VectorRepository : public IRepository<Packet>
+template <typename T>
+class VectorRepository : public IRepository<T>
 {
 public:
-    ~VectorRepository();
-    virtual void Insert(Packet element);
-    virtual void Delete(int index);
-    virtual void Update(int index, Packet element);
-    virtual const Packet GetByIndex(int index) const;
-    virtual const Vector<Packet> GetAll() const;
-    static VectorRepository& GetInstance();
-private:
-    static VectorRepository m_instance;
     VectorRepository();
-    std::mutex m_mutex;
-    Vector<Packet> m_vector;
+    ~VectorRepository();
+    virtual void Insert(T element);
+    virtual void Delete(int index);
+    virtual void Update(int index, T element);
+    virtual const T GetByIndex(int index);
+    virtual int Size() const;
+    //virtual const std::vector<T> GetAll();
+private:
+    Vector<T> m_vector;
 };
+
+#include "VectorRepository.hpp"

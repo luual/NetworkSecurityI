@@ -7,4 +7,4 @@ addons:
   apt:
     sources:
       - g++-5
-script: make
+script: make && make test && ./sniffer_test

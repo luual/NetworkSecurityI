@@ -6,7 +6,7 @@
 **
 ** Creation Date : lun. 14 nov. 2016 20:33:35 CET
 **
-** Last Modified : lun. 14 nov. 2016 22:16:54 CET
+** Last Modified : mer. 16 nov. 2016 21:35:58 CET
 **
 ** Created by : Alexandre LUU <https://github.com/luual>
 **
@@ -25,15 +25,15 @@ class Vector : public IVector<T>
         virtual ~Vector();
         virtual void Push(T element);
         virtual T GetByIndex(int index) const;
-        virtual const std::vector<T> GetAll() const;
         virtual const T GetFront() const;
         virtual const T GetBack() const;
+        virtual const std::vector<T> GetAll();
         virtual int Size() const;
         virtual void Remove(int position);
+        virtual T operator[](int index);
     private:
         std::vector<T> m_vector;
         std::mutex m_guard;
-        pthread_mutex_t m_lock;
 };
 
 #include "Vector.hpp"
