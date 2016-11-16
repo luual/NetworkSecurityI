@@ -18,27 +18,34 @@ VectorRepository::VectorRepository()
 {
 }
 
-~VectorRepository::VectorRepository()
+VectorRepository::~VectorRepository()
 {
 }
 
 void VectorRepository::Insert(Packet element)
 {
+    m_vector.Push(element);
 }
 
-void VectorRepository::Delete(Packet element)
+void VectorRepository::Delete(int index)
 {
+    m_vector.Remove(index);
 }
 
 void VectorRepository::Update(int index, Packet element)
 {
+    if (index > m_vector.Size())
+    {
+        std::cerr << "OutOfRangeException : You requested an element which is not in the range of the table" << std::endl;
+    }
+    m_vector[index] = element;
 }
 
 const Packet VectorRepository::GetByIndex(int index) const
 {
     if (index > m_vector.Size())
     {
-        return null;
+        return NULL;
     }
     return m_vector[index];
 }
