@@ -26,7 +26,8 @@ public:
     virtual void Insert(Packet element);
     virtual void Delete(Packet element);
     virtual void Update(int index, Packet element);
-    virtual Packet GetByIndex(int index);
+    virtual Packet GetByIndex(int index) const;
+    virtual const Vector<Packet> GetAll() const;
 private:
     std::mutex m_mutex;
     Vector<Packet> m_vector;
