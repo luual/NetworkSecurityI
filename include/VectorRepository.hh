@@ -21,14 +21,15 @@
 class VectorRepository : public IRepository<Packet>
 {
 public:
-    VectorRepository();
     ~VectorRepository();
     virtual void Insert(Packet element);
     virtual void Delete(int index);
     virtual void Update(int index, Packet element);
     virtual const Packet GetByIndex(int index) const;
     virtual const Vector<Packet> GetAll() const;
+    static &VectorRepository GetInstance();
 private:
+    VectorRepository();
     std::mutex m_mutex;
     Vector<Packet> m_vector;
 };
