@@ -14,6 +14,12 @@
 #include <iostream>
 #include "VectorRepository.hh"
 
+VectorRepository &GetInstance()
+{
+    static VectorRepository instance;
+    return &instance;
+}
+
 VectorRepository::VectorRepository()
 {
 }
