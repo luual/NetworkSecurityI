@@ -21,6 +21,8 @@
 class VectorRepository : public IRepository
 {
 public:
+    VectorRepository();
+    ~VectorRepository();
     virtual void Insert(Packet element);
     virtual void Delete(Packet element);
     virtual void Update(int index, Packet element);
