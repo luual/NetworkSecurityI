@@ -18,7 +18,7 @@
 #include "ISocketAnalyzer.hh"
 #include "Vector.hh"
 
-class VectorRepository : public IRepository
+class VectorRepository : public IRepository<Packet>
 {
 public:
     VectorRepository();
