@@ -11,7 +11,7 @@
 ** Created by : Alexandre LUU <https://github.com/luual>
 **
 **************************************************************/
-
+#include <iostream>
 #include "VectorRepository.hh"
 
 VectorRepository::VectorRepository()
@@ -37,16 +37,13 @@ void VectorRepository::Update(int index, Packet element)
     if (index > m_vector.Size())
     {
         std::cerr << "OutOfRangeException : You requested an element which is not in the range of the table" << std::endl;
+        return ;
     }
     m_vector[index] = element;
 }
 
 const Packet VectorRepository::GetByIndex(int index) const
 {
-    if (index > m_vector.Size())
-    {
-        return NULL;
-    }
     return m_vector[index];
 }
 
