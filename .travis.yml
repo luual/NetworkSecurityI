@@ -1,4 +1,10 @@
-language: C++
+language: cpp
+sudo: required
+dist: trusty
 compiler:
   - g++
+addons:
+  apt:
+    sources:
+      - g++-5
 script: make
