@@ -13,9 +13,10 @@
 **************************************************************/
 #pragma once
 
-#include <thread>
+#include <mutex>
 #include "IRepository.hh"
 #include "ISocketAnalyzer.hh"
+#include "Vector.hh"
 
 class VectorRepository : public IRepository
 {
@@ -26,4 +27,5 @@ public:
     virtual Packet GetByIndex(int index);
 private:
     std::mutex m_mutex;
+    Vector<Packet> m_vector;
 };
