@@ -27,7 +27,7 @@ public:
     virtual void Update(int index, Packet element);
     virtual const Packet GetByIndex(int index) const;
     virtual const Vector<Packet> GetAll() const;
-    static &VectorRepository GetInstance();
+    static VectorRepository& GetInstance();
 private:
     VectorRepository();
     std::mutex m_mutex;
