@@ -14,10 +14,9 @@
 #include <iostream>
 #include "VectorRepository.hh"
 
-VectorRepository &GetInstance()
+VectorRepository& VectorRepository::GetInstance()
 {
-    static VectorRepository instance;
-    return &instance;
+    return &m_instance;
 }
 
 VectorRepository::VectorRepository()
