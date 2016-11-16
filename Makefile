@@ -3,13 +3,13 @@ CC		=	g++
 RM		=	rm -f
 
 VPATH	=	src \
-			tests
+		tests
 
 SRCS	=	Network.cpp \
-			Socket.cpp \
-			SocketAnalyzer.cpp \
-			Thread.cpp \ 
-			VectorRepository.cpp
+		Socket.cpp \
+		SocketAnalyzer.cpp \
+		Thread.cpp \
+		VectorRepository.cpp
 
 SRCM	=	main.cpp
 
