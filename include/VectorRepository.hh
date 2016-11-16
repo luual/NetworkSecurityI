@@ -29,6 +29,7 @@ public:
     virtual const Vector<Packet> GetAll() const;
     static VectorRepository& GetInstance();
 private:
+    static VectorRepository m_instance;
     VectorRepository();
     std::mutex m_mutex;
     Vector<Packet> m_vector;
