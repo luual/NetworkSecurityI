@@ -6,7 +6,7 @@
 **
 ** Creation Date : ven. 04 nov. 2016 17:49:52 CET
 **
-** Last Modified : ven. 04 nov. 2016 18:18:40 CET
+** Last Modified : jeu. 17 nov. 2016 02:44:51 CET
 **
 ** Created by : Alexandre LUU <https://github.com/luual>
 **
@@ -14,6 +14,7 @@
 #pragma once
 
 #include <unistd.h>
+#include "IRepository.hh"
 
 struct IPHeader
 {
@@ -26,21 +27,30 @@ struct IPHeader
     int checksum;
     char *source;
     char *destination;
+    char *data;
     int size;
     void Clear()
     {
-        free(source);
-        free(destination);
+        if (source != NULL)
+            free(source);
+        if (destination != NULL)
+            free(destination);
+        if (data != NULL)
+            free(data);
     }
 };
 
 struct PacketHeader
 {
     int length;
+    int sourcePort;
+    int destPort;
+    int checksum;
     char *data;
     void Clear()
     {
-        free(data);
+        if (data != NULL)
+            free(data);
     }
 };
 
@@ -50,7 +60,8 @@ struct PacketData
     char *data;
     void Clear()
     {
-        free(data);
+        if (data != NULL)
+            free(data);
     }
 };
 
@@ -67,8 +78,10 @@ struct Packet
     }
 };
 
+template <typename T>
 class ISocketAnalyzer
 {
     public:
-        virtual int Analyze(const int socket) = 0;
+        virtual ~ISocketAnalyzer(){}
+        virtual int Analyze(const int socket, IRepository<T> &repo) = 0;
 };

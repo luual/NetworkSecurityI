@@ -6,7 +6,7 @@
 **
 ** Creation Date : mer. 16 nov. 2016 21:58:24 CET
 **
-** Last Modified : mer. 16 nov. 2016 23:04:15 CET
+** Last Modified : jeu. 17 nov. 2016 00:01:59 CET
 **
 ** Created by : Alexandre LUU <https://github.com/luual>
 **
@@ -15,20 +15,30 @@
 #include <iostream>
 #include "VectorRepository.hh"
 
+static void TestPushRepository(IRepository<Packet> &repo)
+{
+    Packet p1;
+    repo.Insert(p1);
+}
+
 bool PushRepositoryTest()
 {
     IRepository<Packet> *repo = new VectorRepository<Packet>;
-    Packet p1;
-    repo->Insert(p1);
+    TestPushRepository(*repo);
     return repo->Size() == 1;
+}
+
+static void TestPacketIntegrity(IRepository<Packet> &repo)
+{
+    Packet p1;
+    p1.ipHeader.version = 4;
+    repo.Insert(p1);
 }
 
 bool PacketIntegrityTest()
 {
     IRepository<Packet> *repo = new VectorRepository<Packet>;
-    Packet p1;
-    p1.ipHeader.version = 4;
-    repo->Insert(p1);
+    TestPacketIntegrity(*repo);
     Packet p2 = repo->GetByIndex(0);
-    return p1.ipHeader.version == p2.ipHeader.version;
+    return p2.ipHeader.version == 4;
 }

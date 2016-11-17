@@ -6,18 +6,27 @@
  **
  ** Creation Date : ven. 04 nov. 2016 18:14:20 CET
  **
- ** Last Modified : lun. 14 nov. 2016 23:49:44 CET
+ ** Last Modified : mer. 16 nov. 2016 23:50:28 CET
  **
  ** Created by : Alexandre LUU <https://github.com/luual>
  **
  **************************************************************/
-#include <iostream>
-#include <unistd.h>
-#include "SocketAnalyzer.hh"
+
+template <typename T>
+SocketAnalyzer<T>::SocketAnalyzer()
+{
+}
+
+template <typename T>
+SocketAnalyzer<T>::~SocketAnalyzer()
+{
+}
+
 
 ////////////////////////////////////////
 // Analyzer
-int SocketAnalyzer::Analyze(const int socket)
+template <typename T>
+int SocketAnalyzer<T>::Analyze(const int socket, IRepository<T> &repo)
 {
     struct sockaddr addr;
     int dataSize;
@@ -29,7 +38,7 @@ int SocketAnalyzer::Analyze(const int socket)
         if (dataSize > 0)
         {
             std::cout << "Found Something" << std::endl;
-            Process(buffer, dataSize);
+            Process(buffer, dataSize, repo);
         }
         else
         {
@@ -42,7 +51,8 @@ int SocketAnalyzer::Analyze(const int socket)
 ////////////////////////////////////////
 // Print Header
 
-int SocketAnalyzer::PrintHeader(struct iphdr* iph, int iphdrlen)
+template <typename T>
+int SocketAnalyzer<T>::PrintHeader(struct iphdr* iph, int iphdrlen)
 {
     struct sockaddr_in source, dest;
     source.sin_addr.s_addr = iph->saddr;
@@ -64,7 +74,8 @@ int SocketAnalyzer::PrintHeader(struct iphdr* iph, int iphdrlen)
 ////////////////////////////////////////
 // PrintData
 
-void SocketAnalyzer::PrintData(char* data, int size)
+template <typename T>
+void SocketAnalyzer<T>::PrintData(char* data, int size)
 {
     for(int i = 0; i < size; ++i)
     {
@@ -83,7 +94,8 @@ void SocketAnalyzer::PrintData(char* data, int size)
 ////////////////////////////////////////
 // PrintTCP
 
-int SocketAnalyzer::PrintTCP(char* buffer, struct iphdr* iph, int iphdrlen, int size)
+template <typename T>
+int SocketAnalyzer<T>::PrintTCP(char* buffer, struct iphdr* iph, int iphdrlen, int size)
 {
     struct tcphdr* tcp = (struct tcphdr*)(buffer + iphdrlen);
     std::cout << "////////////////////////////////////////" << std::endl;
@@ -103,28 +115,83 @@ int SocketAnalyzer::PrintTCP(char* buffer, struct iphdr* iph, int iphdrlen, int 
     return 0;
 }
 
+template <typename T>
+int SocketAnalyzer<T>::FillIPHeader(struct iphdr &iph, int iphdrlen, Packet &p)
+{
+    struct sockaddr_in source;
+    //struct sockaddr_in dest;
+    source.sin_addr.s_addr = iph.saddr;
+    //dest.sin_addr.s_addr = iph.daddr;
+    p.ipHeader.version = iph.version;
+    p.ipHeader.length = iph.ihl * 4;
+    p.ipHeader.typeOfService = iph.tos;
+    p.ipHeader.totalLength = ntohs(iph.tot_len);
+    p.ipHeader.ttl = iph.ttl;
+    p.ipHeader.protocol = iph.protocol;
+    p.ipHeader.checksum = ntohs(iph.check);
+    p.ipHeader.source = strdup(inet_ntoa(source.sin_addr));
+    p.ipHeader.destination = strdup(inet_ntoa(source.sin_addr));
+    p.ipHeader.size = iphdrlen;
+    return 0;
+}
+
+template <typename T>
+int SocketAnalyzer<T>::FillTCP(char* buffer, int iphdrlen, Packet &p, int totalSize)
+{
+    struct tcphdr* tcp = (struct tcphdr*)(buffer + iphdrlen);
+    p.header.length = tcp->doff * 4;
+    p.header.sourcePort = ntohs(tcp->source);
+    p.header.destPort = ntohs(tcp->dest);
+    p.header.checksum = tcp->check;
+    p.header.data = strndup(buffer + iphdrlen, tcp->doff * 4);
+    p.data.length = totalSize - iphdrlen - tcp->doff * 4;
+    p.data.data = strndup(buffer + iphdrlen + tcp->doff * 4, totalSize - iphdrlen - tcp->doff * 4);
+    return 0;
+}
+
+template <typename T>
+int SocketAnalyzer<T>::FillUDP(char* buffer, int iphdrlen, Packet &p, int totalSize)
+{
+    struct udphdr* udp = (struct udphdr*)(buffer + iphdrlen);
+    p.header.length = ntohs(udp->len);
+    p.header.sourcePort = ntohs(udp->source);
+    p.header.destPort = ntohs(udp->dest);
+    p.header.checksum = ntohs(udp->check);
+    p.header.data = strndup(buffer + iphdrlen, sizeof(udp));
+    p.data.length = totalSize - sizeof(udp) - iphdrlen;
+    p.data.data = strndup(buffer + sizeof(udp) + iphdrlen, p.data.length);
+    return 0;
+}
+
 ////////////////////////////////////////
 // process
 
-int SocketAnalyzer::Process(char* data, int length)
+template <typename T>
+int SocketAnalyzer<T>::Process(char* data, int length, IRepository<T> &repo)
 {
+    std::cout << repo.Size() << std::endl;
+    Packet p;
     struct iphdr* iph = (struct iphdr*)data;
     int iphdrlen = iph->ihl*4;
     //struct tcphdr* tcph = (struct tcphdr*)(data + iphdrlen);
     PrintHeader(iph, iphdrlen);
+    FillIPHeader(*iph, iphdrlen, p);
+    p.ipHeader.data = strndup(data, iphdrlen);
+    FillTCP(data, iphdrlen, p, length);
+    repo.Insert(p);
     PrintTCP(data, iph, iphdrlen, length);
-    std::cout << "==============RAW==============" << std::endl;
-    for (int i = 0; i < length; ++i)
-    {
-        if (data[i] >= 32 && data[i] < 127)
-        {
-            std::cout << data[i];
-        }
-        else
-        {
-            std::cout << ",";
-        }
-    }
-    std::cout << std::endl;
+    //std::cout << "==============RAW==============" << std::endl;
+    //for (int i = 0; i < length; ++i)
+    //{
+    //    if (data[i] >= 32 && data[i] < 127)
+    //    {
+    //        std::cout << data[i];
+    //    }
+    //    else
+    //    {
+    //        std::cout << ",";
+    //    }
+    //}
+    //std::cout << std::endl;
     return 0;
 }
