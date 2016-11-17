@@ -6,7 +6,7 @@
 **
 ** Creation Date : ven. 04 nov. 2016 18:14:30 CET
 **
-** Last Modified : jeu. 17 nov. 2016 03:32:31 CET
+** Last Modified : jeu. 17 nov. 2016 12:27:17 CET
 **
 ** Created by : Alexandre LUU <https://github.com/luual>
 **
@@ -40,8 +40,7 @@ class SocketAnalyzer : public ISocketAnalyzer<T>
         int FillIPHeader(struct iphdr& iph, int iphdrlen, Packet &p);
         int FillTCP(char* buffer, int iphdrlen, Packet &p, int totalSize);
         int FillUDP(char* buffer, int iphdrlen, Packet &p, int totalSize);
-
-
+        int FillICMP(char* buffer, int iphdrlen, Packet &p, int totalSize);
 };
 
 #include "SocketAnalyzer.hpp"

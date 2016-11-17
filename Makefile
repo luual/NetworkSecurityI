@@ -1,4 +1,4 @@
-CC		=	g++
+CXX		=	clang++
 
 RM		=	rm -f
 
@@ -14,7 +14,8 @@ SRCM	=	main.cpp
 SRCT	=	main_test.cpp \
 			VectorTest.cpp \
 			ThreadTest.cpp \
-			RepositoryTest.cpp
+			RepositoryTest.cpp \
+			OptimizationTest.cpp
 
 OBJS	=	$(SRCS:.cpp=.o)
 
@@ -42,12 +43,12 @@ test: $(NAMET)
 
 $(NAME):	$(OBJS) $(OBJM)
 	@echo "[" $(CGREEN) "Compiling sources" $(CNOCOLOR) "]"
-	@$(CC) $(LDFLAGS) $(OBJS) $(OBJM) -o $(NAME) $(DXXFLAGS)
+	@$(CXX) $(LDFLAGS) $(OBJS) $(OBJM) -o $(NAME) $(DXXFLAGS)
 	@echo "------>" $(CGREEN) $(NAME) "created" $(CNOCOLOR)
 
 $(NAMET): $(OBJS) $(OBJT)
 	@echo "[" $(CGREEN) "Compiling sources for test" $(CNOCOLOR) "]"
-	@$(CC) $(LDFLAGS) $(OBJS) $(OBJT) -o $(NAMET) $(DXXFLAGS)
+	@$(CXX) $(LDFLAGS) $(OBJS) $(OBJT) -o $(NAMET) $(DXXFLAGS)
 	@echo "------>" $(CGREEN) $(NAMET) "created" $(CNOCOLOR)
 
 clean:

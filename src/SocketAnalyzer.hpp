@@ -12,6 +12,8 @@
  **
  **************************************************************/
 
+#include <iostream>
+
 template <typename T>
 SocketAnalyzer<T>::SocketAnalyzer()
 {
@@ -37,7 +39,7 @@ int SocketAnalyzer<T>::Analyze(const int socket, IRepository<T> &repo)
     {
         if (dataSize > 0)
         {
-            std::cout << "Found Something" << std::endl;
+            //std::cout << "Found Something" << std::endl;
             Process(buffer, dataSize, repo);
         }
         else
@@ -163,23 +165,47 @@ int SocketAnalyzer<T>::FillUDP(char* buffer, int iphdrlen, Packet &p, int totalS
     return 0;
 }
 
+template<typename T>
+int SocketAnalyzer<T>::FillICMP(char *buffer, int iphdrlen, Packet &p, int totalSize)
+{
+    struct icmphdr* icmp = (struct icmphdr*)(buffer + iphdrlen);
+    p.header.type = icmp->type;
+    p.header.code = icmp->code;
+    p.header.checksum = ntohs(icmp->checksum);
+    p.header.data = strndup(buffer + iphdrlen, sizeof(icmp));
+    p.data.length = totalSize - sizeof(icmp) - iphdrlen;
+    p.data.data = strndup(buffer + iphdrlen + sizeof(icmp), p.data.length);
+    return 0;
+}
+
 ////////////////////////////////////////
 // process
 
 template <typename T>
 int SocketAnalyzer<T>::Process(char* data, int length, IRepository<T> &repo)
 {
-    std::cout << repo.Size() << std::endl;
+    //std::cout << repo.Size() << std::endl;
     Packet p;
     struct iphdr* iph = (struct iphdr*)data;
     int iphdrlen = iph->ihl*4;
     //struct tcphdr* tcph = (struct tcphdr*)(data + iphdrlen);
-    PrintHeader(iph, iphdrlen);
+    //PrintHeader(iph, iphdrlen);
     FillIPHeader(*iph, iphdrlen, p);
     p.ipHeader.data = strndup(data, iphdrlen);
-    FillTCP(data, iphdrlen, p, length);
+    switch (p.ipHeader.protocol)
+    {
+        case 1:
+            FillTCP(data, iphdrlen, p, length);
+            break;
+        case 6:
+            FillTCP(data, iphdrlen, p, length);
+            break;
+        case 17:
+            FillUDP(data, iphdrlen, p, length);
+            break;
+    }
     repo.Insert(p);
-    PrintTCP(data, iph, iphdrlen, length);
+    //PrintTCP(data, iph, iphdrlen, length);
     //std::cout << "==============RAW==============" << std::endl;
     //for (int i = 0; i < length; ++i)
     //{

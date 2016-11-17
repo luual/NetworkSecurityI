@@ -22,6 +22,10 @@ Vector<T>::Vector()
 template <typename T>
 Vector<T>::~Vector()
 {
+    for(size_t i = 0; i < m_vector.size(); ++i)
+    {
+        m_vector[i].Finalize();
+    }
 }
 
 template <typename T>
@@ -59,6 +63,7 @@ template <typename T>
 void Vector<T>::Remove(int position)
 {
     std::lock_guard<std::mutex> lock(m_guard);
+    m_vector[position].Finalize();
     m_vector.erase(m_vector.begin() + position);
 }
 

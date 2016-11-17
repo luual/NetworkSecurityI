@@ -6,7 +6,7 @@
 **
 ** Creation Date : ven. 04 nov. 2016 17:49:52 CET
 **
-** Last Modified : jeu. 17 nov. 2016 02:44:51 CET
+** Last Modified : jeu. 17 nov. 2016 15:32:08 CET
 **
 ** Created by : Alexandre LUU <https://github.com/luual>
 **
@@ -15,6 +15,7 @@
 
 #include <unistd.h>
 #include "IRepository.hh"
+#include "IFinalizer.hh"
 
 struct IPHeader
 {
@@ -25,9 +26,9 @@ struct IPHeader
     int ttl;
     int protocol;
     int checksum;
-    char *source;
-    char *destination;
-    char *data;
+    char *source = NULL;
+    char *destination = NULL;
+    char *data = NULL;
     int size;
     void Clear()
     {
@@ -46,7 +47,9 @@ struct PacketHeader
     int sourcePort;
     int destPort;
     int checksum;
-    char *data;
+    int type;
+    int code;
+    char *data = NULL;
     void Clear()
     {
         if (data != NULL)
@@ -57,7 +60,7 @@ struct PacketHeader
 struct PacketData
 {
     int length;
-    char *data;
+    char *data = NULL;
     void Clear()
     {
         if (data != NULL)
@@ -65,12 +68,12 @@ struct PacketData
     }
 };
 
-struct Packet
+struct Packet : public IFinalizer
 {
     struct IPHeader ipHeader;
     PacketHeader header;
     PacketData data;
-    void Clear()
+    void Finalize()
     {
         ipHeader.Clear();
         header.Clear();
