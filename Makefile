@@ -7,7 +7,8 @@ VPATH	=	src \
 
 SRCS	=	Network.cpp \
 			Socket.cpp \
-			Thread.cpp
+			Thread.cpp \
+			PcapPacketIEFormat.cpp
 
 SRCM	=	main.cpp
 
@@ -15,7 +16,8 @@ SRCT	=	main_test.cpp \
 			VectorTest.cpp \
 			ThreadTest.cpp \
 			RepositoryTest.cpp \
-			OptimizationTest.cpp
+			OptimizationTest.cpp \
+			PcapTest.cpp
 
 OBJS	=	$(SRCS:.cpp=.o)
 

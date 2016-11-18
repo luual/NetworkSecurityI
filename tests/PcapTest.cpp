@@ -1,27 +1,38 @@
 /*************************************************************
 **
-** File Name : main.cpp
+** File Name : PcapTest.cpp
 **
-** Purpose :
+** Purpose : 
 **
-** Creation Date : jeu. 20 oct. 2016 15:04:04 CEST
+** Creation Date : ven. 18 nov. 2016 09:02:56 CET
 **
-** Last Modified : ven. 18 nov. 2016 11:47:54 CET
+** Last Modified : ven. 18 nov. 2016 11:55:52 CET
 **
 ** Created by : Alexandre LUU <https://github.com/luual>
 **
 **************************************************************/
-
+#include <cassert>
 #include <iostream>
 #include <thread>
 #include <typeinfo>
+
+#include "PcapPacketIEFormat.hh"
+#include "VectorRepository.hh"
 #include "Network.hh"
 #include "Socket.hh"
 #include "Vector.hh"
 #include "SocketAnalyzer.hh"
 #include "VectorRepository.hh"
 
-int main(void)
+
+bool PcapStructDataTest()
+{
+    assert(sizeof(PcapHeader) == 24);
+    assert(sizeof(RecordMetaData) == 16);
+    return true;
+}
+
+bool PcapImportTest()
 {
     IRepository<Packet> *repo = new VectorRepository<Packet>();
     auto start_socket = [](IRepository<Packet> &repo, int protocol){
@@ -35,16 +46,27 @@ int main(void)
         free(socket);
         }
     };
+
     std::thread tcp_thread(start_socket, std::ref(*repo), IPPROTO_TCP);
     std::thread udp_thread(start_socket, std::ref(*repo), IPPROTO_UDP);
 
+    bool flag = true;
+    while (flag == true)
+    {
+        if (repo->Size() > 10)
+        {
+            flag = false;
+            PcapPacketIEFormat a;
+            a.Export(*repo, "testcorgi.pcap");
+            std::cout << "EXPORT" << std::endl;
+        }
+        std::cout << "Wait 2 seconds" << std::endl;
+        sleep(2);
+    }
+
     tcp_thread.join();
     udp_thread.join();
-    free(repo);
 
-    //if (socks.Connect(IPPROTO_TCP) == -1)
-    //    return -1;
-    //std::cout << "Socket created" << std::endl;
-    //asock.Analyze(socks.GetSocket(), *repo);
-    return 0;
+    return true;
 }
+

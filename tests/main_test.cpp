@@ -6,7 +6,7 @@
 **
 ** Creation Date : lun. 14 nov. 2016 22:17:33 CET
 **
-** Last Modified : jeu. 17 nov. 2016 16:20:49 CET
+** Last Modified : ven. 18 nov. 2016 09:32:50 CET
 **
 ** Created by : Alexandre LUU <https://github.com/luual>
 **
@@ -23,13 +23,21 @@ int ThreadConcurrency();
 
 // ========== Optimization test ==========
 void LeakTest();
-// ========== Optimization test ==========
+// ========== END Optimization test ==========
+
+// ========== Pcap test ==========
+bool PcapStructDataTest();
+bool PcapImportTest();
+// ========== END Pcap test ==========
+
 
 int main(void)
 {
     //ThreadConcurrency();
     assert(PushRepositoryTest() == 1);
     assert(PacketIntegrityTest() == 1);
-    LeakTest();
+    PcapStructDataTest();
+    PcapImportTest();
+    //LeakTest();
     return 0;
 }

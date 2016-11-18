@@ -6,7 +6,7 @@
 **
 ** Creation Date : ven. 04 nov. 2016 18:14:30 CET
 **
-** Last Modified : jeu. 17 nov. 2016 12:27:17 CET
+** Last Modified : ven. 18 nov. 2016 08:57:45 CET
 **
 ** Created by : Alexandre LUU <https://github.com/luual>
 **
@@ -22,6 +22,7 @@
 #include <netinet/ip.h>
 #include <netinet/tcp.h>
 #include <netinet/udp.h>
+#include <netinet/ip_icmp.h>
 #include <unistd.h>
 #include "ISocketAnalyzer.hh"
 

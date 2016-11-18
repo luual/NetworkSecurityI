@@ -133,7 +133,6 @@ int SocketAnalyzer<T>::FillIPHeader(struct iphdr &iph, int iphdrlen, Packet &p)
     p.ipHeader.checksum = ntohs(iph.check);
     p.ipHeader.source = strdup(inet_ntoa(source.sin_addr));
     p.ipHeader.destination = strdup(inet_ntoa(source.sin_addr));
-    p.ipHeader.size = iphdrlen;
     return 0;
 }
 
@@ -191,11 +190,12 @@ int SocketAnalyzer<T>::Process(char* data, int length, IRepository<T> &repo)
     //struct tcphdr* tcph = (struct tcphdr*)(data + iphdrlen);
     //PrintHeader(iph, iphdrlen);
     FillIPHeader(*iph, iphdrlen, p);
+    p.ipHeader.size = length;
     p.ipHeader.data = strndup(data, iphdrlen);
     switch (p.ipHeader.protocol)
     {
         case 1:
-            FillTCP(data, iphdrlen, p, length);
+            FillICMP(data, iphdrlen, p, length);
             break;
         case 6:
             FillTCP(data, iphdrlen, p, length);
